@@ -1,12 +1,280 @@
- <div>
-    <p>to escrevendo isso nao sei se voce vai ver algum dia na sua vida mas né 
-      algumas coisas que não me dá coragem de falar pra você, hoje é alguns dias depois 
-      do acontecido, é até hoje não sei o pq disso e nunca vou saber nos era metades um do outro mas o
-      problema que nos se machucava um ao outro sem nenhum motivo, não sei explicar mas você sabe 
-      oq eu to falando, tua falta ainda é grande não sei se algum dia passa eu espero que sim,
-      eu vi q você ,seguiu sua vida mas não fico triste afinal é algo normal, falei pra você que no futuro
-      queria te reencontrar lembra né minha antiga princesa, mas hoje olhando prá traz sinceramente a nossa 
-      história vai ficar nesses 3 messes ali só mesmo infelizmente nosso pra sempre teve vida curta, lá na frente 
-      me doi falar isso mas não vou te procurar, vou de tentar de todas as formas te superar, que não sei o porque também, endo com você estava me segurando tipo eu não estava mais fazendo minhas coisas por que estava com você e isso nunca me aconteceu antes, agora to estudando mais e voltei pra academia ( inclusive sua falta nessas horas é maior ainda não sei porque). Mas enfim minha soso não sei se algum dia vc vai ver esse texto também não faço questão de você ver, te desejo tudo de bom, realize seus sonhos, e irei te esquecer, até em outra vida, adeus minha rainnha.
-    </p>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nosso Amor</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #ffdde1, #ee9ca7);
+      overflow: hidden;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .heart {
+      width: 20px;
+      height: 20px;
+      background: red;
+      position: absolute;
+      top: -20px;
+      border-radius: 50% 50% 0 0;
+      transform: rotate(-45deg);
+      animation: fall 6s linear infinite;
+    }
+
+    .heart::after,
+    .heart::before {
+      content: '';
+      width: 20px;
+      height: 20px;
+      background: red;
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 10px;
+      top: 0;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .interactive-heart-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .interactive-heart {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 250px;
+      color: #ccc;
+      transition: color 1s ease-in-out;
+      overflow: hidden;
+    }
+
+    .interactive-heart::before {
+      content: '♡';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .interactive-heart::after {
+      content: '❤';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: red;
+      transform: translateY(100%);
+      transition: transform 3s linear;
+      z-index: 1;
+    }
+
+    .interactive-heart.filling::after {
+      transform: translateY(0%);
+    }
+
+    .main-content {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      z-index: 1;
+      width: 100%;
+      padding-bottom: 60px;
+      animation: fadeIn 1s ease-in-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    iframe {
+      border: none;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 320px;
+      height: 180px;
+      margin-top: 20px;
+    }
+
+    .image-container {
+      margin-top: 20px;
+      width: 300px;
+      height: 300px;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .romantic-text {
+      margin-top: 15px;
+      font-size: 18px;
+      color: #6b0f1a;
+      font-weight: 600;
+      padding: 0 20px;
+    }
+
+    .final-message {
+      margin-top: 40px;
+      font-size: 16px;
+      color: #444;
+      font-weight: normal;
+      padding: 0 20px;
+      text-align: justify;
+    }
+
+    .counter {
+      margin-top: 15px;
+      font-size: 16px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+
+  <div class="interactive-heart-container" onclick="startFillingHeart()">
+    <div class="interactive-heart" id="interactiveHeart"></div>
   </div>
+
+  <div class="main-content" id="content">
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1HNkqx9Ahdgi1Ixy2xkKkL?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+    <div class="image-container">
+      <img src="fotos/WhatsApp Image 2025-06-09 at 14.51.19.jpeg" alt="Nossa foto juntos">
+    </div>
+    
+    <div class="romantic-text">
+      <br>Enfim, dia 12, né, meu amor? O primeiro de muitos que eu quero passar ao seu lado. Aliás, não aceito menos do que mais uns 70, tá?
+
+      <br><br>Minha princesa, quero te agradecer por tudo o que você fez por mim até hoje. Nunca vou esquecer o quanto chorei quando recebi aquele seu site no meu aniversário. Chorei como uma criança.
+
+      <br><br>Obrigado por estar ao meu lado todos os dias — nos bons e nos ruins. Obrigado por fazer questão de “nós”. Obrigado por me amar. Não há presente maior na minha vida do que você.
+
+      <br><br>Te amo demais e não aceito terminar esta vida sem antes vermos nossa felicidade juntos acontecer. Obrigado, minha rainha. Te amo mais do que tudo nesta vida. E o que você precisar, pode saber: eu estarei com você, pra sempre. 💖
+    </div>
+
+    <div class="final-message">
+      <p>
+        Estou escrevendo isso sem saber se algum dia você vai ver, mas enfim...<br><br>
+
+        São coisas que não tenho coragem de te dizer pessoalmente. Hoje é alguns dias depois do acontecido, e até agora eu não entendo o porquê de tudo. Talvez nunca entenda. Nós éramos metades um do outro, mas o problema é que a gente se machucava sem motivo algum. Não sei explicar, mas você sabe do que estou falando.<br><br>
+
+        Sua falta ainda é grande, e não sei se algum dia isso vai passar. Espero que sim. Vi que você seguiu sua vida, e não fico triste com isso — afinal, é algo natural. Eu te disse que, no futuro, queria te reencontrar. Lembra, né? Minha antiga princesa...<br><br>
+
+        Mas hoje, olhando para trás, sinceramente, nossa história vai ficar nesses três meses mesmo. Infelizmente, nosso "pra sempre" teve vida curta. Lá na frente, me dói dizer isso, mas não vou te procurar. Vou tentar de todas as formas te superar. Não sei por que, mas estando com você eu me sentia preso, como se estivesse deixando de fazer minhas coisas. Isso nunca tinha acontecido antes. Agora, voltei a estudar mais e retornei para a academia (inclusive, sua falta nesses momentos é ainda maior... não sei por quê).<br><br>
+
+        Enfim, minha Soso, não sei se um dia você vai ler isso — também não faço questão que leia. Te desejo tudo de bom. Que você realize seus sonhos, e eu vou te esquecer. Talvez em outra vida...<br><br>
+
+        Adeus, minha rainha.
+      </p>
+    </div>
+
+    <div class="counter" id="dayCounter"></div>
+    <div class="counter" id="withoutYouCounter"></div>
+  </div>
+
+  <script>
+    function startFillingHeart() {
+      const interactiveHeart = document.getElementById('interactiveHeart');
+      const interactiveHeartContainer = document.querySelector('.interactive-heart-container');
+
+      interactiveHeart.classList.add('filling');
+      interactiveHeartContainer.style.pointerEvents = 'none';
+
+      setTimeout(() => {
+        interactiveHeartContainer.style.opacity = '0';
+        document.getElementById('content').style.display = 'flex';
+        document.body.style.overflowY = 'auto';
+
+        for (let i = 0; i < 30; i++) {
+          let heart = document.createElement('div');
+          heart.className = 'heart';
+          heart.style.left = Math.random() * 100 + 'vw';
+          heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+          document.getElementById('hearts').appendChild(heart);
+        }
+
+        // Contador desde 21/04/2025
+        const startDate = new Date("2025-04-21");
+        const now = new Date();
+        const diffTime = now - startDate;
+        const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        document.getElementById("dayCounter").innerText = `Estamos juntos há ${days} dias desde o nosso primeiro encontro. 🗓️`;
+
+        // Contador desde 16/07/2025 - Dias sem você
+        const separationDate = new Date("2025-07-16");
+        const today = new Date();
+        const diffSeparation = today - separationDate;
+        const daysWithout = Math.floor(diffSeparation / (1000 * 60 * 60 * 24));
+        document.getElementById("withoutYouCounter").innerText = `${daysWithout} dias sem você `;
+
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
